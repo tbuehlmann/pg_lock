@@ -18,13 +18,13 @@ class PgLock
     end
 
     def aquired?
-      @lock[0]["pg_try_advisory_lock"] == "t"
+      @lock[0]["pg_try_advisory_lock"] == true
     rescue
       false
     end
 
     def active?
-      connection.exec(<<-eos, args).getvalue(0,0) == "t"
+      connection.exec(<<-eos, args).getvalue(0,0) == true
         SELECT granted
         FROM pg_locks
         WHERE locktype = 'advisory' AND
